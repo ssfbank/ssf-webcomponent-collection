@@ -1,0 +1,49 @@
+$ssf-blue: #00529b;
+
+.remember-me-container {
+  margin-top: 20px;
+}
+
+#evry-login-client {
+  width: 600px;
+  height: 300px;
+  border: none;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+
+  &.flex-h-center {
+    justify-content: center;
+  }
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+
+  &.flex-h-center {
+    align-items: center;
+  }
+
+  &.flex-v-center {
+    justify-content: center;
+  }
+}
+
+.flex-row,
+.flex-column {
+  > * {
+    display: flex;
+  }
+}
+
+#qr-login-button-container {
+  margin-left: 20px;
+  padding-top: 10px;
+
+  > button {
+    margin-bottom: 10px;
+  }
+}
