@@ -6,24 +6,25 @@ export class WebClient {
 
   constructor(private useSecureConnection: boolean) {
     this.client = new Client({
-      debug: (str) => {console.log(`WS DEBUG: ${str}`)},
+      // debug: str => {
+      //   console.log(`WS DEBUG: ${str}`);
+      // },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       logRawCommunication: false
     });
 
-    this.client.onStompError = function() {
-    }
+    this.client.onStompError = function() {};
   }
 
   public async connect(hostName: string) {
     this.hostName = hostName;
     if (this.client.connected) {
-      this.client.forceDisconnect
-    };
+      this.client.forceDisconnect;
+    }
 
-    const protocol = this.useSecureConnection ? 'wss://' : 'ws://'
+    const protocol = this.useSecureConnection ? 'wss://' : 'ws://';
 
     this.client.brokerURL = `${protocol}${hostName}/login`;
     this.client.activate();
@@ -31,27 +32,22 @@ export class WebClient {
 
   public async startListening(sessionId: string) {
     return await new Promise((resolve, reject) => {
-      const callback = (message) => {
-        console.log("GOT CALLBACK", message);
+      const callback = message => {
         if (message.body) {
           var body = JSON.parse(message.body);
 
           resolve(body);
         } else {
-          console.log("REJECTED!!!");
-          reject("Timed out");
+          reject('Timed out');
         }
       };
 
       const that = this;
 
       this.client.onConnect = function() {
-        that.client.subscribe(
-          `/broker/${sessionId}`,
-          callback
-        );
-      }
-    })
+        that.client.subscribe(`/broker/${sessionId}`, callback);
+      };
+    });
   }
 
   public async login(credentials) {
@@ -65,9 +61,13 @@ export class WebClient {
         }
       };
 
-      const protocol = this.useSecureConnection ? 'https://' : 'http://'
+      const protocol = this.useSecureConnection ? 'https://' : 'http://';
 
-      xhr.open('POST', `${protocol}${this.hostName}/api/login/prod/credentials/submit`, true);
+      xhr.open(
+        'POST',
+        `${protocol}${this.hostName}/api/login/prod/credentials/submit`,
+        true
+      );
       xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
       xhr.send(JSON.stringify(credentials));
     });
@@ -87,9 +87,13 @@ export class WebClient {
         reject(`ERROR:`);
       };
 
-      const protocol = this.useSecureConnection ? 'https://' : 'http://'
+      const protocol = this.useSecureConnection ? 'https://' : 'http://';
 
-      xhr.open('GET', `${protocol}${this.hostName}/api/login/prod/credentials/`, true);
+      xhr.open(
+        'GET',
+        `${protocol}${this.hostName}/api/login/prod/credentials/`,
+        true
+      );
       xhr.send();
     });
   }
