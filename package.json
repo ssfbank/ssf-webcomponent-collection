@@ -14,8 +14,7 @@
     "build": "stencil build --docs",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll",
-    //"postinstall": "stencil build --docs"
+    "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
     "@stomp/stompjs": "^5.2.0",
