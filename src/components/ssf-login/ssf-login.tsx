@@ -1,5 +1,6 @@
 import { Component, Prop, State } from '@stencil/core';
 import { WebClient } from './websocket-client';
+import { Device, DeviceManager } from './device-manager';
 
 @Component({
   tag: 'ssf-login',
@@ -10,12 +11,13 @@ export class SSFLogin {
   /**
    * URL for EVRY Login client
    */
-  @Prop() evryLoginURL: string = "https://acc.ssfbank.no/online/api/idp_login/evry/start_auth";
+  @Prop() evryLoginURL: string =
+    'https://acc.ssfbank.no/online/api/idp_login/evry/start_auth';
 
   /**
    * The host to SSF Login Services
    */
-  @Prop() ssfLoginServiceHost: string = "localhost:8070";
+  @Prop() ssfLoginServiceHost: string = 'localhost:8070';
 
   /**
    * Use secure connection
@@ -23,8 +25,12 @@ export class SSFLogin {
   @Prop() useSecureConnection: boolean = false;
 
   @State() sessionId: string;
+  @State() devices: Device[];
+  @State() rememberMe: boolean;
+  @State() showLoader: boolean = false;
 
   private webClient: WebClient;
+  private deviceManager: DeviceManager;
 
   private connectWebSocket() {
     this.webClient.connect(this.ssfLoginServiceHost);
@@ -34,38 +40,85 @@ export class SSFLogin {
     (async () => {
       this.sessionId = await this.webClient.getSessionId();
       const credentials = await this.webClient.startListening(this.sessionId);
+      if (this.rememberMe) {
+        this.deviceManager.add({
+          deviceName: (credentials as any).deviceName,
+          pushToken: (credentials as any).pushToken,
+          userName: (credentials as any).personName
+        });
+      }
       await this.webClient.login(credentials);
     })();
   }
 
+  private getDeviceLoginButtonCaption(device: Device) {
+    if (!device) {
+      return '';
+    }
+
+    return `${device.userName} sin ${device.deviceName}`;
+  }
+
+  private onDeviceButtonClick(device: Device) {
+    this.webClient.loginWithPushToken(device.pushToken, this.sessionId);
+    this.showLoader = true;
+  }
+
+  private rememberMeChanged(customEvent: CustomEvent<boolean>) {
+    this.rememberMe = customEvent.detail;
+  }
+
   componentWillLoad() {
     this.webClient = new WebClient(this.useSecureConnection);
+    this.deviceManager = new DeviceManager();
+    this.devices = this.deviceManager.devices;
     this.connectWebSocket();
     this.setSessionId();
   }
 
   render() {
-    return  <div class="flex-column flex-h-center flex-v-center full-height">
-              <div class="flex-row flex-h-center">
-                <iframe
-                  id="evry-login-client"
-                  src={this.evryLoginURL}
-                  sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock allow-same-origin allow-top-navigation">
-                </iframe>
-              </div>
-              <div class="flex-row flex-h-center">
-                <div class="flex-column flex-h-center">
-                  <ssf-qr-code size={200} text={`ssfbank:${this.sessionId}`}></ssf-qr-code>
-                  <div class="remember-me-container">
-                    <ssf-checkbox caption="Hugs meg"></ssf-checkbox>
-                  </div>
-                </div>
-                <div
-                    id="qr-login-button-container"
-                    class="flex-column">
-                    <ssf-button caption="TEST"></ssf-button>
-                </div>
+    let loginContainerClasses = 'flex-column flex-h-center flex-v-center';
+    loginContainerClasses += this.showLoader ? ' hidden' : '';
+
+    return (
+      <div class="flex-column flex-v-center loader-container">
+        <ssf-loader
+          class={
+            this.showLoader
+              ? 'loader-inner-container'
+              : 'loader-inner-container hidden'
+          }
+        />
+        <div class={loginContainerClasses}>
+          <div class="flex-row flex-h-center">
+            <iframe
+              id="evry-login-client"
+              src={this.evryLoginURL}
+              sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock allow-same-origin allow-top-navigation"
+            />
+          </div>
+          <div class="flex-row flex-h-center">
+            <div class="flex-column flex-h-center">
+              <ssf-qr-code size={200} text={`ssfbank:${this.sessionId}`} />
+              <div class="remember-me-container">
+                <ssf-checkbox
+                  caption="Hugs meg"
+                  checked={this.rememberMe}
+                  onCheckboxChecked={ev => this.rememberMeChanged(ev)}
+                />
               </div>
             </div>
+            <div id="qr-login-button-container" class="flex-column">
+              {this.devices.map(deviceItem => (
+                <ssf-button
+                  onClick={_ => this.onDeviceButtonClick(deviceItem)}
+                  caption={this.getDeviceLoginButtonCaption(deviceItem)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 }

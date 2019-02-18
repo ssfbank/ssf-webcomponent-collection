@@ -23,6 +23,7 @@ export namespace Components {
     * Caption to show on the button
     */
     'caption'?: string;
+    'onOnClick'?: (event: CustomEvent) => void;
   }
 
   interface SsfCheckbox {
@@ -30,13 +31,19 @@ export namespace Components {
     * Caption to show on the checkbox
     */
     'caption': string;
+    'checked': boolean;
   }
   interface SsfCheckboxAttributes extends StencilHTMLAttributes {
     /**
     * Caption to show on the checkbox
     */
     'caption'?: string;
+    'checked'?: boolean;
+    'onCheckboxChecked'?: (event: CustomEvent<boolean>) => void;
   }
+
+  interface SsfLoader {}
+  interface SsfLoaderAttributes extends StencilHTMLAttributes {}
 
   interface SsfLogin {
     /**
@@ -111,6 +118,7 @@ declare global {
   interface StencilElementInterfaces {
     'SsfButton': Components.SsfButton;
     'SsfCheckbox': Components.SsfCheckbox;
+    'SsfLoader': Components.SsfLoader;
     'SsfLogin': Components.SsfLogin;
     'SsfQrCode': Components.SsfQrCode;
   }
@@ -118,6 +126,7 @@ declare global {
   interface StencilIntrinsicElements {
     'ssf-button': Components.SsfButtonAttributes;
     'ssf-checkbox': Components.SsfCheckboxAttributes;
+    'ssf-loader': Components.SsfLoaderAttributes;
     'ssf-login': Components.SsfLoginAttributes;
     'ssf-qr-code': Components.SsfQrCodeAttributes;
   }
@@ -135,6 +144,12 @@ declare global {
     new (): HTMLSsfCheckboxElement;
   };
 
+  interface HTMLSsfLoaderElement extends Components.SsfLoader, HTMLStencilElement {}
+  var HTMLSsfLoaderElement: {
+    prototype: HTMLSsfLoaderElement;
+    new (): HTMLSsfLoaderElement;
+  };
+
   interface HTMLSsfLoginElement extends Components.SsfLogin, HTMLStencilElement {}
   var HTMLSsfLoginElement: {
     prototype: HTMLSsfLoginElement;
@@ -150,6 +165,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'ssf-button': HTMLSsfButtonElement
     'ssf-checkbox': HTMLSsfCheckboxElement
+    'ssf-loader': HTMLSsfLoaderElement
     'ssf-login': HTMLSsfLoginElement
     'ssf-qr-code': HTMLSsfQrCodeElement
   }
@@ -157,6 +173,7 @@ declare global {
   interface ElementTagNameMap {
     'ssf-button': HTMLSsfButtonElement;
     'ssf-checkbox': HTMLSsfCheckboxElement;
+    'ssf-loader': HTMLSsfLoaderElement;
     'ssf-login': HTMLSsfLoginElement;
     'ssf-qr-code': HTMLSsfQrCodeElement;
   }

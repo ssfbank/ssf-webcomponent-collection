@@ -73,11 +73,26 @@ export class WebClient {
     });
   }
 
+  public async loginWithPushToken(pushToken: string, sessionId: string) {
+    var xhr = new XMLHttpRequest();
+
+    const protocol = this.useSecureConnection ? 'https://' : 'http://';
+
+    xhr.open('POST', `${protocol}${this.hostName}/api/login/push`, true);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.send(
+      JSON.stringify({
+        pushToken: pushToken,
+        sessionId: sessionId
+      })
+    );
+  }
+
   public async getSessionId() {
     return await new Promise<string>((resolve, reject) => {
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 202) {
+        if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 202) {
           const sessionId = xhr.responseText;
           resolve(sessionId);
         }

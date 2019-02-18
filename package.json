@@ -1,6 +1,6 @@
 {
   "name": "ssf-web-components",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Stencil Component Starter",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@stomp/stompjs": "^5.2.0",
-    "@types/node": "^11.9.3"
+    "@types/node": "^11.9.3",
+    "lottie-web": "^5.4.4"
   },
   "devDependencies": {
     "@stencil/core": "~0.16.2",

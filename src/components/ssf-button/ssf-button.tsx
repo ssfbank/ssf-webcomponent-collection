@@ -1,4 +1,5 @@
-import { Component, Prop } from '@stencil/core';
+import { Component, Prop, Event } from '@stencil/core';
+import { EventEmitter } from 'events';
 
 @Component({
   tag: 'ssf-button',
@@ -11,7 +12,15 @@ export class SSFButton {
    */
   @Prop() caption: string;
 
+  @Event() onClick: EventEmitter;
+
   render() {
-    return  <button class="pure-material-button-contained">{this.caption}</button>
+    return (
+      <button
+        onClick={_ => this.onClick.emit('')}
+        class="pure-material-button-contained">
+        {this.caption}
+      </button>
+    );
   }
 }

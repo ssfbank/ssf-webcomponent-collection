@@ -47,3 +47,15 @@ $ssf-blue: #00529b;
     margin-bottom: 10px;
   }
 }
+
+.loader-container {
+  height: 90vh;
+
+  .loader-inner-container {
+    height: 200px;
+  }
+}
+
+.hidden {
+  display: none;
+}
