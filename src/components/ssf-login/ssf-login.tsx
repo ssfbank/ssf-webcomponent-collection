@@ -59,6 +59,11 @@ export class SSFLogin {
     return `${device.userName} sin ${device.deviceName}`;
   }
 
+  private onDeleteDeviceButtonClick(device: Device) {
+    this.deviceManager.remove(device);
+    this.devices = this.deviceManager.devices;
+  }
+
   private onDeviceButtonClick(device: Device) {
     this.webClient.loginWithPushToken(device.pushToken, this.sessionId);
     this.showLoader = true;
@@ -110,10 +115,17 @@ export class SSFLogin {
             </div>
             <div id="qr-login-button-container" class="flex-column">
               {this.devices.map(deviceItem => (
-                <ssf-button
-                  onClick={_ => this.onDeviceButtonClick(deviceItem)}
-                  caption={this.getDeviceLoginButtonCaption(deviceItem)}
-                />
+                <div class="flex-row">
+                  <ssf-button
+                    onClick={_ => this.onDeviceButtonClick(deviceItem)}
+                    caption={this.getDeviceLoginButtonCaption(deviceItem)}
+                  />
+                  <ssf-button
+                    class="button-delete"
+                    onClick={_ => this.onDeleteDeviceButtonClick(deviceItem)}
+                    caption=""
+                  />
+                </div>
               ))}
             </div>
           </div>
