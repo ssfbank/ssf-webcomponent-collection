@@ -44,9 +44,13 @@ export class WebClient {
 
       const that = this;
 
-      this.client.onConnect = function() {
+      if (this.client.connected) {
         that.client.subscribe(`/broker/${sessionId}`, callback);
-      };
+      } else {
+        this.client.onConnect = function() {
+          that.client.subscribe(`/broker/${sessionId}`, callback);
+        };
+      }
     });
   }
 
