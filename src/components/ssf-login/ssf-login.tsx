@@ -32,7 +32,7 @@ export class SSFLogin {
   private webClient: WebClient;
   private deviceManager: DeviceManager;
 
-  private isIE: boolean = false;
+  private browserSupportsWebSockets: boolean = false;
 
   private connectWebSocket() {
     this.webClient.connect(this.ssfLoginServiceHost);
@@ -81,7 +81,7 @@ export class SSFLogin {
     this.devices = this.deviceManager.devices;
     this.connectWebSocket();
     this.setSessionId();
-    this.isIE = false || !!(document as any).documentMode;
+    this.browserSupportsWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
   }
 
   render() {
@@ -89,57 +89,54 @@ export class SSFLogin {
     loginContainerClasses += this.showLoader ? ' hidden' : '';
 
     return (
-      <div class="flex-column flex-v-center flex-row flex-h-center">
-        <div class={this.isIE ? '' : 'hidden'}>
-          <div class="flex-column">
-            <div class="broken-ie flex-row flex-h-center flex-v-end">
-              <span class="text-center">Dette vil sannsynlegvis gå gale!<br/>Prøv igjen med Chrome</span>
-            </div>
+      <div class="flex-column flex-h-center main-container">
+        <div class={this.browserSupportsWebSockets ? 'hidden' : 'flex-column flex-h-center flex-v-center full-flex'}>
+          <div class="broken-browser-container flex-column">
+            <div class="broken-browser"></div>
+            <div class="text-center flex-column flex-h-center"><h2>Oooops!</h2> <span>Det ser ut som at denne nettlesaren er for gamal</span></div>
           </div>
         </div>
-        <div class={this.isIE ? 'hidden' : ''}>
-          <div class="loader-container">
-            <ssf-loader
-              class={
-                this.showLoader
-                  ? 'loader-inner-container'
-                  : 'loader-inner-container hidden'
-              }
-            />
-            <div class={loginContainerClasses}>
-              <div class="flex-row flex-h-center">
-                <iframe
-                  id="evry-login-client"
-                  src={this.evryLoginURL}
-                  sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock allow-same-origin allow-top-navigation"
-                />
+        <div class={this.browserSupportsWebSockets ? 'loader-container' : 'hidden'}>
+          <ssf-loader
+            class={
+              this.showLoader
+                ? 'loader-inner-container'
+                : 'loader-inner-container hidden'
+            }
+          />
+          <div class={loginContainerClasses}>
+            <div class="flex-row flex-h-center">
+              <iframe
+                id="evry-login-client"
+                src={this.evryLoginURL}
+                sandbox="allow-scripts allow-forms allow-popups allow-pointer-lock allow-same-origin allow-top-navigation"
+              />
+            </div>
+            <div class="flex-row flex-h-center">
+              <div class="flex-column flex-h-center">
+                <ssf-qr-code size={200} text={`ssfbank:${this.sessionId}`} />
+                <div class="remember-me-container">
+                  <ssf-checkbox
+                    caption="Hugs meg"
+                    checked={this.rememberMe}
+                    onCheckboxChecked={ev => this.rememberMeChanged(ev)}
+                  />
+                </div>
               </div>
-              <div class="flex-row flex-h-center">
-                <div class="flex-column flex-h-center">
-                  <ssf-qr-code size={200} text={`ssfbank:${this.sessionId}`} />
-                  <div class="remember-me-container">
-                    <ssf-checkbox
-                      caption="Hugs meg"
-                      checked={this.rememberMe}
-                      onCheckboxChecked={ev => this.rememberMeChanged(ev)}
+              <div id="qr-login-button-container" class="flex-column">
+                {this.devices.map(deviceItem => (
+                  <div class="device-button-row flex-row">
+                    <ssf-button
+                      onClick={_ => this.onDeviceButtonClick(deviceItem)}
+                      caption={this.getDeviceLoginButtonCaption(deviceItem)}
+                    />
+                    <ssf-button
+                      class="button-delete"
+                      onClick={_ => this.onDeleteDeviceButtonClick(deviceItem)}
+                      caption=""
                     />
                   </div>
-                </div>
-                <div id="qr-login-button-container" class="flex-column">
-                  {this.devices.map(deviceItem => (
-                    <div class="device-button-row flex-row">
-                      <ssf-button
-                        onClick={_ => this.onDeviceButtonClick(deviceItem)}
-                        caption={this.getDeviceLoginButtonCaption(deviceItem)}
-                      />
-                      <ssf-button
-                        class="button-delete"
-                        onClick={_ => this.onDeleteDeviceButtonClick(deviceItem)}
-                        caption=""
-                      />
-                    </div>
-                  ))}
-                </div>
+                ))}
               </div>
             </div>
           </div>

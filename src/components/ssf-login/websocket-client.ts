@@ -6,9 +6,9 @@ export class WebClient {
 
   constructor(private useSecureConnection: boolean) {
     this.client = new Client({
-      // debug: str => {
-      //   console.log(`WS DEBUG: ${str}`);
-      // },
+      debug: str => {
+        console.log(`WS DEBUG: ${str}`);
+      },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
@@ -59,7 +59,7 @@ export class WebClient {
       const xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
-          document.open();
+          // document.open();
           document.write(xhr.responseText);
           document.close();
         }

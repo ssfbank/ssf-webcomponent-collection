@@ -11,6 +11,7 @@ export const config: Config = {
       serviceWorker: null // disable service workers
     }
   ],
+  globalScript: "src/polyfills.ts",
   globalStyle: "src/scss/index.scss",
   plugins: [
     sass({injectGlobalPaths: [

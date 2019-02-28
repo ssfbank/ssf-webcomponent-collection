@@ -19,7 +19,11 @@
   "dependencies": {
     "@stomp/stompjs": "^5.2.0",
     "@types/node": "^11.9.3",
-    "lottie-web": "^5.4.4"
+    "es6-object-assign": "^1.1.0",
+    "htmlelement.polyfills": "^2.0.2",
+    "lottie-web": "^5.4.4",
+    "object-assign": "^4.1.1",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
     "@stencil/core": "~0.16.2",
