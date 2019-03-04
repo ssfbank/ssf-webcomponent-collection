@@ -81,7 +81,8 @@ export class SSFLogin {
     this.devices = this.deviceManager.devices;
     this.connectWebSocket();
     this.setSessionId();
-    this.browserSupportsWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
+    this.browserSupportsWebSockets =
+      'WebSocket' in window || 'MozWebSocket' in window;
   }
 
   render() {
@@ -90,13 +91,24 @@ export class SSFLogin {
 
     return (
       <div class="flex-column flex-h-center main-container">
-        <div class={this.browserSupportsWebSockets ? 'hidden' : 'flex-column flex-h-center flex-v-center full-flex'}>
+        <div
+          class={
+            this.browserSupportsWebSockets
+              ? 'hidden'
+              : 'flex-column flex-h-center flex-v-center full-flex'
+          }>
           <div class="broken-browser-container flex-column">
-            <div class="broken-browser"></div>
-            <div class="text-center flex-column flex-h-center"><h2>Oooops!</h2> <span>Det ser ut som at denne nettlesaren er for gamal</span></div>
+            <div class="broken-browser" />
+            <div class="text-center flex-column flex-h-center">
+              <h2>Oooops!</h2>{' '}
+              <span>Det ser ut som at denne nettlesaren er for gamal</span>
+            </div>
           </div>
         </div>
-        <div class={this.browserSupportsWebSockets ? 'loader-container' : 'hidden'}>
+        <div
+          class={
+            this.browserSupportsWebSockets ? 'loader-container' : 'hidden'
+          }>
           <ssf-loader
             class={
               this.showLoader
@@ -117,24 +129,28 @@ export class SSFLogin {
                 <ssf-qr-code size={200} text={`ssfbank:${this.sessionId}`} />
                 <div class="remember-me-container">
                   <ssf-checkbox
-                    caption="Hugs meg"
                     checked={this.rememberMe}
-                    onCheckboxChecked={ev => this.rememberMeChanged(ev)}
-                  />
+                    onCheckboxChecked={ev => this.rememberMeChanged(ev)}>
+                    Hugs meg
+                  </ssf-checkbox>
                 </div>
               </div>
               <div id="qr-login-button-container" class="flex-column">
                 {this.devices.map(deviceItem => (
                   <div class="device-button-row flex-row">
                     <ssf-button
-                      onClick={_ => this.onDeviceButtonClick(deviceItem)}
-                      caption={this.getDeviceLoginButtonCaption(deviceItem)}
-                    />
+                      color="primary"
+                      type="raised"
+                      onClick={_ => this.onDeviceButtonClick(deviceItem)}>
+                      {this.getDeviceLoginButtonCaption(deviceItem)}
+                    </ssf-button>
                     <ssf-button
+                      color="primary"
+                      type="outline"
                       class="button-delete"
-                      onClick={_ => this.onDeleteDeviceButtonClick(deviceItem)}
-                      caption=""
-                    />
+                      onClick={_ => this.onDeleteDeviceButtonClick(deviceItem)}>
+                      <i class="ssf-recycle_bin_delete_garbage" />
+                    </ssf-button>
                   </div>
                 ))}
               </div>

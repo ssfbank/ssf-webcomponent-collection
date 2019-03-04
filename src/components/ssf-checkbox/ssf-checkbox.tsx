@@ -10,7 +10,6 @@ export class SSFCheckbox {
   /**
    * Caption to show on the checkbox
    */
-  @Prop() caption: string;
   @Prop() checked: boolean;
 
   @Event() checkboxChecked: EventEmitter<boolean>;
@@ -30,7 +29,9 @@ export class SSFCheckbox {
           ref={el => (this.checkboxInput = el as HTMLInputElement)}
           onChange={_ => this.checkboxChange()}
         />
-        <span>{this.caption}</span>
+        <span>
+          <slot />
+        </span>
       </label>
     );
   }

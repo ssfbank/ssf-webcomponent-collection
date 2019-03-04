@@ -1,25 +1,51 @@
-import { Component, Prop, Event } from '@stencil/core';
-import { EventEmitter } from 'events';
+import { Component, Prop, Element, State } from '@stencil/core';
 
 @Component({
   tag: 'ssf-button',
   styleUrl: 'ssf-button.scss',
   shadow: true
 })
-export class SSFButton {
-  /**
-   * Caption to show on the button
-   */
-  @Prop() caption: string;
+export class ButtonComponent {
+  @Prop() type: 'basic' | 'raised' | 'outline' | 'flat' = 'basic';
+  @Prop() color: 'plain' | 'primary' | 'secondary' | 'danger' = 'plain';
 
-  @Event() onClick: EventEmitter;
+  @State() ripples: JSX.Element[] = [];
+
+  @Element() buttonEl: HTMLElement;
+
+  handleClick = event => {
+    let { offsetLeft, offsetTop, offsetWidth, offsetHeight } = this.buttonEl;
+
+    let rippleSize;
+    if (offsetWidth > offsetHeight) {
+      rippleSize = offsetWidth;
+    } else {
+      rippleSize = offsetHeight;
+    }
+
+    const rippleX = event.pageX - offsetLeft - rippleSize / 2;
+    const rippleY = event.pageY - offsetTop - rippleSize / 2;
+
+    const rippleStyles = {
+      width: rippleSize + 'px',
+      height: rippleSize + 'px',
+      top: rippleY + 'px',
+      left: rippleX + 'px'
+    };
+
+    this.ripples = [
+      ...this.ripples,
+      <span class="ripple" style={rippleStyles} />
+    ];
+  };
 
   render() {
     return (
       <button
-        onClick={_ => this.onClick.emit('')}
-        class="pure-material-button-contained">
-        {this.caption}
+        class={`${this.type} ${this.color}`}
+        onMouseDown={this.handleClick}>
+        {...this.ripples}
+        <slot />
       </button>
     );
   }

@@ -13,31 +13,24 @@ import '@stencil/core';
 export namespace Components {
 
   interface SsfButton {
-    /**
-    * Caption to show on the button
-    */
-    'caption': string;
+    'color': 'plain' | 'primary' | 'secondary' | 'danger';
+    'type': 'basic' | 'raised' | 'outline' | 'flat';
   }
   interface SsfButtonAttributes extends StencilHTMLAttributes {
-    /**
-    * Caption to show on the button
-    */
-    'caption'?: string;
-    'onOnClick'?: (event: CustomEvent) => void;
+    'color'?: 'plain' | 'primary' | 'secondary' | 'danger';
+    'type'?: 'basic' | 'raised' | 'outline' | 'flat';
   }
 
   interface SsfCheckbox {
     /**
     * Caption to show on the checkbox
     */
-    'caption': string;
     'checked': boolean;
   }
   interface SsfCheckboxAttributes extends StencilHTMLAttributes {
     /**
     * Caption to show on the checkbox
     */
-    'caption'?: string;
     'checked'?: boolean;
     'onCheckboxChecked'?: (event: CustomEvent<boolean>) => void;
   }

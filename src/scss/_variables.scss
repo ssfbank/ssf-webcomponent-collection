@@ -1,15 +1,12 @@
+$default-primary-color: rgb(0, 82, 155);
+$default-secondary-color: #ffb944;
+$default-danger-color: #f54e71;
+
 $onsurface: rgb(0, 0, 0);
-$primary: rgb(0,82,155);
+$primary: rgb(0, 82, 155);
 $onprimary: rgb(255, 255, 255);
 
 //colors
 $black_20: rgba(0, 0, 0, 0.2);
 $black_14: rgba(0, 0, 0, 0.14);
 $black_12: rgba(0, 0, 0, 0.12);
-
-
-:root {
-  --pure-material-onsurface-rgb: $onsurface;
-  --pure-material-primary-rgb: $primary;
-  --pure-material-onprimary-rgb: $onprimary;
-}
