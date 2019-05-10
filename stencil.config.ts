@@ -3,7 +3,8 @@ import { sass } from '@stencil/sass';
 
 export const config: Config = {
   namespace: 'ssf-webcomponent-collection',
-  outputTargets:[
+
+  outputTargets: [
     { type: 'dist' },
     { type: 'docs' },
     {
@@ -14,8 +15,10 @@ export const config: Config = {
   globalScript: "src/polyfills.ts",
   globalStyle: "src/scss/index.scss",
   plugins: [
-    sass({injectGlobalPaths: [
-      'src/scss/index.scss'
-    ]})
+    sass({
+      injectGlobalPaths: [
+        'src/scss/index.scss'
+      ]
+    })
   ],
 };
