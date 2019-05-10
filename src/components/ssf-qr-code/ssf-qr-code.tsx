@@ -22,10 +22,10 @@ export class SSFQrCode {
   margin: number = 0;
 
   @Prop()
-  colorDark: string = '#00529b';
+  colorDark: string = '#003d7c';
 
   @Prop()
-  colorLight: string = '#90caf9';
+  colorLight: string = '#00529b'; //'#90caf9';
 
   @Prop()
   bgSrc: string =
@@ -120,7 +120,7 @@ export class SSFQrCode {
       autoColor: toBoolean(this.autoColor),
       binarize: toBoolean(this.binarize),
       binarizeThreshold: this.binarizeThreshold,
-      callback: function(dataURI) {
+      callback: function (dataURI) {
         this.callback && this.callback(dataURI, this.qid);
       }
     });

@@ -9,8 +9,7 @@
 
 | Property  | Attribute | Description                     | Type      | Default     |
 | --------- | --------- | ------------------------------- | --------- | ----------- |
-| `caption` | `caption` | Caption to show on the checkbox | `string`  | `undefined` |
-| `checked` | `checked` |                                 | `boolean` | `undefined` |
+| `checked` | `checked` | Caption to show on the checkbox | `boolean` | `undefined` |
 
 
 ## Events

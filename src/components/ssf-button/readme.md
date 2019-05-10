@@ -7,16 +7,10 @@
 
 ## Properties
 
-| Property  | Attribute | Description                   | Type     | Default     |
-| --------- | --------- | ----------------------------- | -------- | ----------- |
-| `caption` | `caption` | Caption to show on the button | `string` | `undefined` |
-
-
-## Events
-
-| Event     | Description | Type                |
-| --------- | ----------- | ------------------- |
-| `onClick` |             | `CustomEvent<void>` |
+| Property | Attribute | Description | Type                                              | Default   |
+| -------- | --------- | ----------- | ------------------------------------------------- | --------- |
+| `color`  | `color`   |             | `"danger" \| "plain" \| "primary" \| "secondary"` | `'plain'` |
+| `type`   | `type`    |             | `"basic" \| "flat" \| "outline" \| "raised"`      | `'basic'` |
 
 
 ----------------------------------------------
